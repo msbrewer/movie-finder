@@ -4,7 +4,7 @@ import Header from "./Header";
 import Movie from "./Movie";
 import Search from "./Search";
 
-const MOVIE_API_URL = "";
+const MOVIE_API_URL = "http://www.omdbapi.com/?i=tt3896198&apikey=28774c2f";
 
 const initialState = {
 	loading: true,
@@ -12,7 +12,7 @@ const initialState = {
 	errorMessage: null
 };
 
-const reducer = (state, action) +> {
+const reducer = (state, action) => {
 	switch (action.type) {
 		case "SEARCH_MOVIES_REQUEST":
 			return {
@@ -31,8 +31,8 @@ const reducer = (state, action) +> {
 				...state,
 				loading: false,
 				errorMessage: action.error
-			}:
-		default
+			};
+		default:
 			return state;
 	}
 };
@@ -46,20 +46,19 @@ const App = () => {
 			fetch(MOVIE_API_URL)
 				.then(response => response.json())
 				.then(jsonResponse => {
-
 				dispatch({
 					type: "SEARCH_MOVIES_SUCCESS",
 					payload: jsonResponse.Search
-				}):
+				});
 			});
 	}, []);
 
-	const search = searchValule => {
+	const search = searchValue => {
 		dispatch({
 		type:"SEARCH_MOVIES_REQUEST"
 		});
 
-			fetch(`https://www.omdbapi.com/?s=${searchValue}&apiKey=`)
+			fetch(`http://www.omdbapi.com/?s=${searchValue}&apiKey=28774c2f`)
 			.then(response => response.json())
 			.then(jsonResponse => {
 				if (jsonResponse.Response === "True") {
