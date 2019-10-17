@@ -17,8 +17,8 @@ const reducer = (state, action) => {
 		case "SEARCH_MOVIES_REQUEST":
 			return {
 				...state,
-				loading: false,
-				movies: action.payload
+				loading: true,
+				movies: null
 			};
 		case "SEARCH_MOVIES_SUCCESS":
 			return {
@@ -46,17 +46,18 @@ const App = () => {
 			fetch(MOVIE_API_URL)
 				.then(response => response.json())
 				.then(jsonResponse => {
+				
 				dispatch({
 					type: "SEARCH_MOVIES_SUCCESS",
 					payload: jsonResponse.Search
 				});
 			});
-	}, []);
+		}, []);
 
-	const search = searchValue => {
-		dispatch({
-		type:"SEARCH_MOVIES_REQUEST"
-		});
+		const search = searchValue => {
+			dispatch({
+			type:"SEARCH_MOVIES_REQUEST"
+			});
 
 			fetch(`http://www.omdbapi.com/?s=${searchValue}&apiKey=28774c2f`)
 			.then(response => response.json())
@@ -65,26 +66,26 @@ const App = () => {
 				dispatch({
 					type: "SEARCH_MOVIES_SUCCESS",
 					payload: jsonResponse.Search
-			});
-			} else {
-			dispatch({
-				type: "SEARCH_MOVIES_FAILURE",
-				error: jsonResponse.Error
-			});
+				});
+				} else {
+				dispatch({
+					type: "SEARCH_MOVIES_FAILURE",
+					error: jsonResponse.Error
+				});
 			}
-			});
+		});
 	};
-    const { movies, errorMessage, loading } = state;
+const { movies, errorMessage, loading } = state;
 
-    return (
-    <div className="App">
-      <Header text="HOOKED" />
-      <Search search={search} />
-      <p className="App-intro">Sharing a few of our favorite movies</p>
-      <div className="movies">
-        {loading && !errorMessage ? (
-          <span>loading... </span>
-        ) : errorMessage ? (
+return (
+<div className="App">
+    <Header text="HOOKED" />
+    <Search search={search} />
+    <p className="App-intro">Sharing a few of our favorite movies</p>
+    <div className="movies">
+    	{loading && !errorMessage ? (
+       	 	<span>loading... </span>
+    	) : errorMessage ? (
           <div className="errorMessage">{errorMessage}</div>
         ) : (
           movies.map((movie, index) => (
